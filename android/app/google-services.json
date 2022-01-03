@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "769753163846",
+    "project_id": "fantasy-football-3e1cb",
+    "storage_bucket": "fantasy-football-3e1cb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:769753163846:android:cd1082e3ac80a66de44247",
+        "android_client_info": {
+          "package_name": "com.ff.fantasyfootball"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "769753163846-olvs31n6f9impmv1dqvqnp2u8i9om0q5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ff.fantasyfootball",
+            "certificate_hash": "6dd8d144c221bce07206b3960a52e83ec773f33a"
+          }
+        },
+        {
+          "client_id": "769753163846-9t9a0ipq7voqsj740s2n99sd0516ul9r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_CySZbLyXNK9nSJ-SY5PFCy3jeuegaX0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "769753163846-9t9a0ipq7voqsj740s2n99sd0516ul9r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

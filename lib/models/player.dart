@@ -1,19 +1,27 @@
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:fantasy_football/models/position.dart';
 import 'package:fantasy_football/models/rating.dart';
-import 'package:fantasy_football/widgets/rating_container.dart';
-import 'package:flutter/material.dart';
+import 'package:fantasy_football/models/squad.dart';
+import 'package:flutter/services.dart';
+
+import 'package:image/image.dart' as Img;
 
 class Player {
-  int playerID = 1;
-  String firstName = "Firstname";
-  String lastName = "Lastname";
-  String photo = "https://cdn.sofifa.net/players/232/938/22_360.png";
-  Position position;
+  int playerID;
+  String firstName;
+  String lastName;
+  Uint8List photo;
+  Position position = Position.attacker();
+  SquadRole? squadRole;
   List<Rating> ratings = [];
 
-  Player(this.position)
+  Player({required this.playerID, 
+  required this.firstName, 
+  required this.lastName,
+  required this.photo,
+  required this.position})
   {
     var rng = Random();
     for(int i = 0; i < 12; i++)
@@ -23,23 +31,29 @@ class Player {
   }
 
   String fullname() => firstName + " " + lastName; 
+  bool inFirstTeam() => squadRole == SquadRole.sub1 || squadRole == SquadRole.sub2;
 
-  Color generateRatingColor(double rating)
+  static Future<Uint8List> bytes(String strURL) async 
   {
-    if(rating <= 4) {return const Color(0xffff0000);}
-    else if(rating <= 8) {return const Color(0xffffff00);}
-    else {return const Color(0xff00ff00);}
-  }
+    //strURL = "https://media.api-sports.io/football/players/276.png";
+    ByteData byteData = (await NetworkAssetBundle(Uri.parse(strURL)).load(strURL));
 
-  List<Widget> ratingsWidget()
-  {
-    List<Widget> ratingWidgets = [];
+    //ByteData byteData = await rootBundle.load('lib/161.png');
 
-    for(var rating in ratings.take(5))
+    //print(byteData.buffer.asUint8List());
+
+    Img.Image image = Img.decodeImage(byteData.buffer.asUint8List()) as Img.Image;
+
+    image.channels = Img.Channels.rgba;
+    var pixels = image.getBytes();
+    for (int i = 0, len = pixels.length; i < len; i += 4) 
     {
-      ratingWidgets.add(RatingContainer(rating, generateRatingColor(rating.rating)));
+      if (pixels[i] > 225 && pixels[i + 1] > 225 && pixels[i + 2] > 225) 
+      {
+        pixels[i + 3] = 0;
+      }
     }
 
-    return ratingWidgets;
+    return Img.encodePng(image) as Uint8List;
   }
 }

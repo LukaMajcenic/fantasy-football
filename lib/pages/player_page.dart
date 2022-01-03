@@ -10,7 +10,7 @@ class PlayerDetails extends StatelessWidget {
         backgroundColor: Colors.grey[900],
         appBar: AppBar(
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
+            icon: const Icon(Icons.arrow_back_ios),
             onPressed: () => Navigator.pop(context)
           ),
         ),

@@ -14,7 +14,7 @@ class RatingContainer extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
-          margin: const EdgeInsets.only(right: 5, top: 5),
+          margin: const EdgeInsets.only(right: 5),
           alignment: Alignment.center,
           child: Text(
             rating.round,

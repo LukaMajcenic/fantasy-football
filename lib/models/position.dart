@@ -1,10 +1,17 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-class Position {
+class Position extends Equatable {
   late int positionId;
   late String shortName;
   late String fullName;
   late Color color;
+
+  static List<Position> positions() => [
+    Position.goalkeeper(), 
+    Position.defender(),
+    Position.midfielder(),
+    Position.attacker()];
 
   Position.goalkeeper()
   {
@@ -37,4 +44,32 @@ class Position {
     fullName = "Attacker";
     color = Colors.blue;
   }
+
+  Position.undefined()
+  {
+    positionId = -1;
+    shortName = "XX";
+    fullName = "Undefined";
+    color = Colors.black;
+  }
+
+  static Position generatePostition(String strPosition)
+  {
+    switch(strPosition)
+    {
+      case 'Goalkeeper':
+        return Position.goalkeeper();
+      case 'Defender':
+        return Position.defender();
+      case 'Midfielder':
+        return Position.midfielder();
+      case 'Attacker':
+        return Position.attacker();
+      default:
+        return Position.undefined();
+    }
+  }
+
+  @override
+  List<Object?> get props => [positionId];
 }
