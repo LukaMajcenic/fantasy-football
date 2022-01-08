@@ -1,3 +1,4 @@
+import 'package:fantasy_football/blocs/pageview_cubit.dart';
 import 'package:fantasy_football/blocs/squad_cubit.dart';
 import 'package:fantasy_football/pages/login.dart';
 import 'package:fantasy_football/pages/main.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'blocs/players_cubit.dart';
+import 'const/colors.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,15 +46,18 @@ class FantasyFootballState extends State<FantasyFootball> {
         ),
         BlocProvider<SquadCubit>(
           create: (_) => SquadCubit()
+        ),
+        BlocProvider<PageViewCubit>(
+          create: (_) => PageViewCubit(),
         )
       ],
       child: MaterialApp(
         theme: ThemeData(
-          scaffoldBackgroundColor: const Color(0xff191919),
+          scaffoldBackgroundColor: C.dark_1,
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
-              primary: Colors.blueAccent[700],
-              onPrimary: Colors.lightGreenAccent[400]
+              primary: C.blue,
+              onPrimary: C.green
             ),
           ),
           textTheme: Theme.of(context).textTheme.apply(
@@ -60,7 +65,7 @@ class FantasyFootballState extends State<FantasyFootball> {
             bodyColor: Colors.grey[50]
           )
         ),
-        home: FirebaseAuth.instance.currentUser == null ? const Login() : const Main()
+        home: FirebaseAuth.instance.currentUser == null ? const Login() : Main()
       ),
     );
   }

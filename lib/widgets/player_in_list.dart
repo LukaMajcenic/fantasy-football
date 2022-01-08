@@ -74,14 +74,46 @@ class PlayerInList extends StatelessWidget {
               Expanded(
                 child: Container(
                   alignment: Alignment.centerRight,
-                  child: IconButton(
+                  child: Builder(
+                    builder: (context) {
+                      if(!context.read<SquadCubit>().state.teamPicked)
+                      {
+                        return IconButton(
+                          color: Colors.red,
+                          onPressed: () {
+                            context.read<SquadCubit>().changePlayer(squadRole);
+                          }, 
+                          icon: const Icon(Icons.clear)
+                        );
+                      }
+                      else if(position == null)
+                      {
+                        return IconButton(
+                          onPressed: (){
+                            context.read<SquadCubit>().changePlayer(squadRole, player);
+                          }, 
+                          icon: const Icon(Icons.change_circle)
+                        );
+                      }
+                      else
+                      {
+                        return Container(width: 0.0, height: 0.0);
+                      }
+                    }
+                  )
+                  /* context.read<SquadCubit>().state.teamPicked 
+                  ? IconButton(
+                    onPressed: (){}, 
+                    icon: const Icon(Icons.change_circle)
+                  )
+                  : IconButton(
                     color: Colors.red,
                     onPressed: () 
                     {
                       context.read<SquadCubit>().changePlayer(squadRole);
                     }, 
                     icon: const Icon(Icons.clear)
-                  ),
+                  ), */
                 )
               )
             ],
