@@ -33,7 +33,7 @@ class Position extends Equatable {
   {
     positionId = 3;
     shortName = "MF";
-    fullName = "Midfileder";
+    fullName = "Midfielder";
     color = Colors.green;
   }
 

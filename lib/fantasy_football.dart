@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:fantasy_football/blocs/pageview_cubit.dart';
 import 'package:fantasy_football/blocs/squad_cubit.dart';
 import 'package:fantasy_football/pages/login.dart';
@@ -9,10 +11,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'blocs/players_cubit.dart';
 import 'const/colors.dart';
+import 'models/squad.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await FirebaseAuth.instance.signOut();
   runApp(const FantasyFootball());
 }
 

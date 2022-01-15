@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SquadCubit extends Cubit<Squad>
 {
-  SquadCubit() : super(Squad(teamPicked: false));
+  SquadCubit() : super(Squad(squadSelected: false));
 
   void changePlayer(SquadRole squadRole, [Player? player])
   {
@@ -34,25 +34,25 @@ class SquadCubit extends Cubit<Squad>
     emit(Squad.from(state));
   }
 
-  Future saveSquad(Squad squad) async 
+  void reset() => emit(Squad(squadSelected: false));
+
+
+  Future saveSquad() async 
   {
-    await DbServices.saveSquad(squad);
-    state.teamPicked = true;
+    state.squadSelected = true;
+    await DbServices.saveSquad(state);
     emit(Squad.from(state));
   }
  
-  Future loadSquad() async
+  Future<Squad> loadSquad() async
   {
-    if(await DbServices.userNodeExists())
-    {
-      emit(await DbServices.loadSquad());
-      print("squad loaded");
-    }
-    else
+    if(!await DbServices.userNodeExists())
     {
       await DbServices.initSquad();
-      emit(Squad(teamPicked: false));
-      print("squad init");
     }
+
+    Squad squad = await DbServices.loadSquad();
+    emit(squad);
+    return squad;
   }
 }

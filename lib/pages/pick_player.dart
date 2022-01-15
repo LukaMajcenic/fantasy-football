@@ -31,7 +31,7 @@ class PickPlayer extends StatelessWidget {
                 },
                 child: Row(
                   children: [
-                    Image.memory(players[index].photo),
+                    //Image.memory(players[index].photo),
                     Text(players[index].fullname())
                   ],
                 ),

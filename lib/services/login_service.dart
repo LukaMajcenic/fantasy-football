@@ -6,6 +6,11 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginService
 {
+  static Future<void> logout() async
+  {
+    await FirebaseAuth.instance.signOut();
+  }
+
   static Future<void> loginAsGuest(Squad squad) async 
   {
     await FirebaseAuth.instance.signInAnonymously();

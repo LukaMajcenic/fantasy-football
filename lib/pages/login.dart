@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:fantasy_football/blocs/squad_cubit.dart';
+import 'package:fantasy_football/services/db_services.dart';
 import 'package:fantasy_football/services/login_service.dart';
 import 'package:fantasy_football/svg/login.svg.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,10 @@ class _LoginState extends State<Login> {
                   child: const Text("Login with google"),
                   onPressed: () => LoginService.signInWithGoogle(context.read<SquadCubit>().state),
                 ),
+/*                 ElevatedButton(
+                  child: const Text("Import players"),
+                  onPressed: () => DbServices.importPlayers(),
+                ), */
               ]
             )
           ),

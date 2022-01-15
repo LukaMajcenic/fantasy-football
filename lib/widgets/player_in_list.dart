@@ -57,7 +57,7 @@ class PlayerInList extends StatelessWidget {
                       style: TextStyle(color: Colors.grey[900]),
                     ),
                   ),
-                  Image.memory(player?.photo as Uint8List)
+                  Image.memory(player?.image.uint8list as Uint8List)
                 ]
               ),
               Column(
@@ -76,7 +76,7 @@ class PlayerInList extends StatelessWidget {
                   alignment: Alignment.centerRight,
                   child: Builder(
                     builder: (context) {
-                      if(!context.read<SquadCubit>().state.teamPicked)
+                      if(!context.read<SquadCubit>().state.squadSelected)
                       {
                         return IconButton(
                           color: Colors.red,

@@ -5,6 +5,9 @@ import 'package:fantasy_football/const/colors.dart';
 import 'package:fantasy_football/models/player.dart';
 import 'package:fantasy_football/models/squad.dart';
 import 'package:fantasy_football/pages/squad_page.dart';
+import 'package:fantasy_football/pages/squad_selection.dart';
+import 'package:fantasy_football/services/login_service.dart';
+import 'package:fantasy_football/widgets/shared/appbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,93 +24,70 @@ class Main extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    context.read<SquadCubit>().loadSquad();
-    if(!context.read<SquadCubit>().state.teamPicked)
-    {
-      context.read<PlayersCubit>().setList();
-    }
-    
-    print("built");
-
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(56),
-        child: BlocBuilder<PageViewCubit, int>(
-          builder: (context, index) {
-            return AppBar(
-              backgroundColor: C.dark_2,
-              elevation: 0,
-              leading: IconButton(
-                icon: const Icon(Icons.logout),
-                tooltip: 'Show Snackbar',
-                onPressed: () {
-                  FirebaseAuth.instance.signOut();
-                },
-              ),
-              actions: [
-                if(index == 1) ...[
-                  BlocBuilder<SquadCubit, Squad>(
-                    builder: (_, squad) {
-                      return Padding(
-                        padding: EdgeInsets.all(8),
-                        child: ElevatedButton(
-                          child: const Text("CONFIRM TEAM"),
-                          onPressed: squad.allPlayers().where((p) => p == null).isEmpty 
-                          ? () => context.read<SquadCubit>().saveSquad(squad)
-                          : null,
-                        )
+    return FutureBuilder<Squad>(
+      future: context.read<SquadCubit>().loadSquad(),
+      builder: (_, snapshot) {
+        if(snapshot.hasData)
+        {
+          return BlocBuilder<SquadCubit, Squad>(
+            builder: (_, squad) {
+              if(squad.squadSelected)
+              {
+                return Scaffold(
+                  appBar: const SharedAppBar("Squad"),
+                  body: PageView(
+                    controller: _controller,
+                    onPageChanged: (newIndex) => context.read<PageViewCubit>().changeIndex(newIndex),
+                    children: [
+                      Container(),
+                      const SquadPage(),
+                      Container(
+                        color: Colors.grey[900],
+                      )
+                    ]
+                  ),
+                  bottomNavigationBar: BlocBuilder<PageViewCubit, int>(
+                    builder: (context, index) {
+                      return BottomNavigationBar(
+                        onTap: (newIndex) {
+                          _animateToPage(newIndex);
+                          context.read<PageViewCubit>().changeIndex(newIndex);
+                        },
+                        currentIndex: index,
+                        unselectedItemColor:  Colors.blueAccent[100],
+                        selectedItemColor: C.green,
+                        backgroundColor: C.blue,
+                        items: const [
+                          BottomNavigationBarItem(
+                            icon: Icon(Icons.home),
+                            label: "Home"
+                          ),
+                          BottomNavigationBarItem(
+                            icon: Icon(Icons.people), 
+                            label: "Squad"
+                          ),
+                          BottomNavigationBarItem(
+                            icon: Icon(Icons.sports_soccer), 
+                            label: "Fixtures"
+                          )
+                        ],
                       );
                     }
                   )
-                ],
-              ]
-            );
-          }
-        ),
-      ),
-      body: PageView(
-        controller: _controller,
-        onPageChanged: (newIndex) => context.read<PageViewCubit>().changeIndex(newIndex),
-        children: context.read<SquadCubit>().state.teamPicked ? [
-          Container(),
-          const SquadPage(),
-          Container(
-            color: Colors.grey[900],
-          )
-        ] : [
-          Container(),
-          Container(color: Colors.red,),
-          Container()
-        ],
-      ),
-      bottomNavigationBar: BlocBuilder<PageViewCubit, int>(
-        builder: (context, index) {
-          return BottomNavigationBar(
-            onTap: (newIndex) {
-              _animateToPage(newIndex);
-              context.read<PageViewCubit>().changeIndex(newIndex);
-            },
-            currentIndex: index,
-            unselectedItemColor:  Colors.blueAccent[100],
-            selectedItemColor: Colors.lightGreenAccent[400],
-            backgroundColor: Colors.blueAccent[700],
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: "Home"
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.people), 
-                label: "Squad"
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.sports_soccer), 
-                label: "Fixtures"
-              )
-            ],
+                );
+              }
+              else
+              {
+                return const SquadSelection();
+              }
+            }
           );
         }
-      )
+        else
+        {
+          return const Text("Loading squad");
+        }
+      }
     );
   }
 }

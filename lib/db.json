@@ -1,7 +1,8 @@
 {
-    "users": {
-      "123": {
-        "name": "John"
-      }
-    }
-  }
+  "firstName": "firstName",
+  "lastName": "lastName",
+  "position": "position.fullName",
+  "ratings": [
+    {"x": "y"}
+  ]
+}

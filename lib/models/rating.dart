@@ -12,4 +12,12 @@ class Rating
     else if(rating <= 8) {color = const Color(0xffffff00);}
     else {color = const Color(0xff00ff00);}
   }
+
+  Map<String, Object> toJson()
+  {
+    return {
+      "value": rating,
+      "round": round
+    };
+  }
 }
