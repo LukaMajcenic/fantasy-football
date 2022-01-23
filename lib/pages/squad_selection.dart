@@ -1,5 +1,6 @@
 import 'package:fantasy_football/blocs/players_cubit.dart';
 import 'package:fantasy_football/blocs/squad_cubit.dart';
+import 'package:fantasy_football/blocs/states/squad_cubit_state.dart';
 import 'package:fantasy_football/const/colors.dart';
 import 'package:fantasy_football/models/squad.dart';
 import 'package:fantasy_football/services/login_service.dart';
@@ -22,9 +23,9 @@ class SquadSelection extends StatelessWidget {
         if(snapshot.hasData)
         {
           return Scaffold(
-            appBar: const SharedAppBar("Select squad"), 
-            body: BlocBuilder<SquadCubit, Squad>(
-              builder: (_, squad) {
+            appBar: const SharedAppBar(text: "Select squad"), 
+            body: BlocBuilder<SquadCubit, SquadCubitState>(
+              builder: (_, state) {
                 return Column(
                   children: [
                     const SquadTextContainer("FIRST TEAM", C.dark_1),
@@ -32,7 +33,7 @@ class SquadSelection extends StatelessWidget {
                       flex: 4,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
-                          children: WidgetGenerators.getFirstTeamPlayerWidgets(squad.firstTeamPlayers()),
+                          children: WidgetGenerators.getFirstTeamPlayerWidgets(state.squad.firstTeamPlayers()),
                         ),
                     ),
                     const SquadTextContainer("RESERVES", C.dark_2),
@@ -42,7 +43,7 @@ class SquadSelection extends StatelessWidget {
                         color: C.dark_2,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.end,
-                          children: WidgetGenerators.getSubsPlayerWidgets(squad.reservePlayers()),
+                          children: WidgetGenerators.getSubsPlayerWidgets(state.squad.reservePlayers()),
                         ),
                       )
                     ),

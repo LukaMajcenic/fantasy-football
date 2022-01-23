@@ -1,3 +1,4 @@
+import 'package:fantasy_football/const/colors.dart';
 import 'package:flutter/material.dart';
 
 class PositionContainer extends StatelessWidget {
@@ -10,12 +11,12 @@ class PositionContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: color,
+      color: C.dark_3,
       padding: const EdgeInsets.all(2),
       child: Text(
         text.toUpperCase(),
         textScaleFactor: textScaleFactor,
-        style: TextStyle(color: Colors.grey[900]),
+        style: TextStyle(color: color),
       ),
     );
   }

@@ -1,58 +1,68 @@
+import 'package:fantasy_football/blocs/states/squad_cubit_state.dart';
 import 'package:fantasy_football/models/player.dart';
 import 'package:fantasy_football/models/squad.dart';
-import 'package:fantasy_football/services/db_services.dart';
+import 'package:fantasy_football/services/DbServices/shared_db_services.dart';
+import 'package:fantasy_football/services/DbServices/squad_db_services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SquadCubit extends Cubit<Squad>
+class SquadCubit extends Cubit<SquadCubitState>
 {
-  SquadCubit() : super(Squad(squadSelected: false));
+  SquadCubit() : super(SquadLoading())
+  {
+    DatabaseReference ref = FirebaseDatabase.instance.ref("rounds");
+    Stream<DatabaseEvent> stream = ref.onValue;
+
+    stream.listen((DatabaseEvent event) async {
+      emit(SquadLoaded(squad: await SquadDbServices.loadSquad()));
+    });
+  }
 
   void changePlayer(SquadRole squadRole, [Player? player])
   {
     switch(squadRole)
     {
       case SquadRole.goalkeeper:
-        state.goalkeeper = player;
+        state.squad.goalkeeper = player;
         break;
       case SquadRole.defender:
-        state.defender = player;
+        state.squad.defender = player;
         break;
       case SquadRole.midfielder:
-        state.midfielder = player;
+        state.squad.midfielder = player;
         break;
       case SquadRole.attacker:
-        state.attacker = player;
+        state.squad.attacker = player;
         break;
       case SquadRole.sub1:
-        state.sub1 = player;
+        state.squad.sub1 = player;
         break;
       case SquadRole.sub2:
-        state.sub2 = player;
+        state.squad.sub2 = player;
         break;
     }
 
-    emit(Squad.from(state));
+    emit(SquadLoaded(squad: Squad.from(state.squad)));
   }
-
-  void reset() => emit(Squad(squadSelected: false));
 
 
   Future saveSquad() async 
   {
-    state.squadSelected = true;
-    await DbServices.saveSquad(state);
-    emit(Squad.from(state));
+    state.squad.squadSelected = true;
+    await SquadDbServices.saveSquad(state.squad);
+    emit(SquadLoaded(squad: Squad.from(state.squad)));
   }
  
   Future<Squad> loadSquad() async
   {
-    if(!await DbServices.userNodeExists())
+    if(!await SharedDbServices.nodeExists("users/${FirebaseAuth.instance.currentUser?.uid}"))
     {
-      await DbServices.initSquad();
+      await SquadDbServices.initSquad();
     }
 
-    Squad squad = await DbServices.loadSquad();
-    emit(squad);
+    Squad squad = await SquadDbServices.loadSquad();
+    emit(SquadLoaded(squad: Squad.from(state.squad)));
     return squad;
   }
 }

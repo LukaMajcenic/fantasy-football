@@ -1,7 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:fantasy_football/blocs/players_cubit.dart';
+import 'package:fantasy_football/blocs/round_timer_cubit.dart';
 import 'package:fantasy_football/blocs/squad_cubit.dart';
+import 'package:fantasy_football/const/colors.dart';
 import 'package:fantasy_football/models/player.dart';
 import 'package:fantasy_football/models/position.dart';
 import 'package:fantasy_football/models/rating.dart';
@@ -25,11 +27,11 @@ class PlayerInList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return Expanded(
-      child: player != null ? ElevatedButton(
+    var child2 = player != null ? ElevatedButton(
         style: ElevatedButton.styleFrom(
           primary: Colors.transparent,
           onPrimary: Colors.grey[200],
+          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
           elevation: 0,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.zero,
@@ -41,83 +43,83 @@ class PlayerInList extends StatelessWidget {
             MaterialPageRoute(builder: (context) => PlayerDetails())
           ); */
         },
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 3),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Stack(
-                alignment: AlignmentDirectional.bottomStart,
-                children: [
-                  Container(
-                    color: player?.position.color,
-                    padding: const EdgeInsets.all(2),
-                    child: Text(
-                      player?.position.shortName as String,
-                      style: TextStyle(color: Colors.grey[900]),
-                    ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Stack(
+              alignment: AlignmentDirectional.topStart,
+              children: [            
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.centerRight,
+                      colors: [
+                        player?.position.color.withOpacity(0.7) as Color,
+                        Colors.transparent
+                      ]
+                    )
                   ),
-                  Image.memory(player?.image.uint8list as Uint8List)
-                ]
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 15),
-                      child: Text(player?.fullname() as String),
-                    ),
-                    Row(children: WidgetGenerators.getRatingWidgets(player?.ratings as List<Rating>))
-                  ],
-              ),
-              Expanded(
-                child: Container(
-                  alignment: Alignment.centerRight,
-                  child: Builder(
-                    builder: (context) {
-                      if(!context.read<SquadCubit>().state.squadSelected)
-                      {
-                        return IconButton(
-                          color: Colors.red,
-                          onPressed: () {
-                            context.read<SquadCubit>().changePlayer(squadRole);
-                          }, 
-                          icon: const Icon(Icons.clear)
-                        );
-                      }
-                      else if(position == null)
-                      {
-                        return IconButton(
-                          onPressed: (){
-                            context.read<SquadCubit>().changePlayer(squadRole, player);
-                          }, 
-                          icon: const Icon(Icons.change_circle)
-                        );
-                      }
-                      else
-                      {
-                        return Container(width: 0.0, height: 0.0);
-                      }
-                    }
+                  child: Image.memory(player?.image.uint8list as Uint8List),
+                ),
+                Text(
+                  player?.position.shortName as String,
+                  style: TextStyle(
+                    color: player?.position.color as Color
                   )
-                  /* context.read<SquadCubit>().state.teamPicked 
-                  ? IconButton(
-                    onPressed: (){}, 
-                    icon: const Icon(Icons.change_circle)
-                  )
-                  : IconButton(
-                    color: Colors.red,
-                    onPressed: () 
+                )   
+              ]
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(player?.fullname() as String),
+                Row(children: WidgetGenerators.getRatingWidgets(player?.ratings as List<Rating>))
+              ],
+            ),
+            Expanded(
+              child: Container(
+                alignment: Alignment.centerRight,
+                child: Builder(
+                  builder: (context) {
+                    if(!context.read<SquadCubit>().state.squad.squadSelected)
                     {
-                      context.read<SquadCubit>().changePlayer(squadRole);
-                    }, 
-                    icon: const Icon(Icons.clear)
-                  ), */
+                      return IconButton(
+                        color: Colors.red,
+                        onPressed: () {
+                          context.read<SquadCubit>().changePlayer(squadRole);
+                        }, 
+                        icon: const Icon(Icons.clear)
+                      );
+                    }
+                    else if(position == null)
+                    {
+                      return BlocBuilder<RoundTimerCubit, Duration>
+                      (
+                        builder: (_, timer) {
+                          if(timer > const Duration())
+                          {
+                            return IconButton(
+                              onPressed: (){
+                                context.read<SquadCubit>().changePlayer(squadRole, player);
+                              }, 
+                              icon: const Icon(Icons.change_circle)
+                            );
+                          }
+                          return Container();
+                        }
+                      );
+                    }
+                    else
+                    {
+                      return Container(width: 0.0, height: 0.0);
+                    }
+                  }
                 )
               )
-            ],
-          ),
+            )
+          ],
         )
       ) : 
       SizedBox(
@@ -151,7 +153,9 @@ class PlayerInList extends StatelessWidget {
             ),
           )
         )
-      )
+      );
+    return Expanded(
+      child: child2
     );
   }
 }

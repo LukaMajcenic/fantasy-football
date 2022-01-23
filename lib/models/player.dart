@@ -24,11 +24,11 @@ class Player {
   required this.image,
   required this.position})
   {
-    var rng = Random();
+/*     var rng = Random();
     for(int i = 0; i < 12; i++)
     {
       ratings.add(Rating(rng.nextDouble() * (10 - 1) + 1, "R" + (i+1).toString()));
-    }
+    } */
   }
 
   String fullname() => firstName + " " + lastName;
@@ -39,6 +39,16 @@ class Player {
     ByteData byteData = await NetworkAssetBundle(Uri.parse(url)).load(url);
 
     Img.Image image = Img.decodeImage(byteData.buffer.asUint8List()) as Img.Image;
+
+    image.channels = Img.Channels.rgba;
+    var pixels = image.getBytes();
+    for (int i = 0, len = pixels.length; i < len; i += 4) 
+    {
+      if (pixels[i] > 225 && pixels[i + 1] > 225 && pixels[i + 2] > 225) 
+      {
+        pixels[i + 3] = 0;
+      }
+    }
 
     return PlayerImage(playerID: PlayerID, uint8list: Img.encodePng(image) as Uint8List);
   }

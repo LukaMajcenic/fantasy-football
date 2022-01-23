@@ -1,4 +1,5 @@
 import 'package:fantasy_football/blocs/squad_cubit.dart';
+import 'package:fantasy_football/blocs/states/squad_cubit_state.dart';
 import 'package:fantasy_football/const/colors.dart';
 import 'package:fantasy_football/models/squad.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +11,8 @@ class SquadSelectionActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SquadCubit, Squad>(
-      builder: (context, snapshot) {
+    return BlocBuilder<SquadCubit, SquadCubitState>(
+      builder: (context, state) {
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           color: C.dark_2,
@@ -26,7 +27,7 @@ class SquadSelectionActions extends StatelessWidget {
                 ),
               ),
               ElevatedButton(
-                onPressed: context.read<SquadCubit>().state.allPlayers().where((p) => p == null).isEmpty 
+                onPressed: context.read<SquadCubit>().state.squad.allPlayers().where((p) => p == null).isEmpty 
                 ? () => context.read<SquadCubit>().saveSquad()
                 : null,
                 child: Row(

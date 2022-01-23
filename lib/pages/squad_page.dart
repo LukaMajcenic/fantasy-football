@@ -1,4 +1,5 @@
 import 'package:fantasy_football/blocs/squad_cubit.dart';
+import 'package:fantasy_football/blocs/states/squad_cubit_state.dart';
 import 'package:fantasy_football/const/colors.dart';
 import 'package:fantasy_football/models/squad.dart';
 import 'package:fantasy_football/widgets/squad_text_container.dart';
@@ -12,8 +13,8 @@ class SquadPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return BlocBuilder<SquadCubit, Squad>(
-      builder: (context, squad) {
+    return BlocBuilder<SquadCubit, SquadCubitState>(
+      builder: (context, state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -22,7 +23,7 @@ class SquadPage extends StatelessWidget {
               flex: 4,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
-                  children: WidgetGenerators.getFirstTeamPlayerWidgets(squad.firstTeamPlayers()),
+                  children: WidgetGenerators.getFirstTeamPlayerWidgets(state.squad.firstTeamPlayers()),
                 ),
             ),
             const SquadTextContainer("RESERVES", C.dark_2),
@@ -32,7 +33,7 @@ class SquadPage extends StatelessWidget {
                 color: C.dark_2,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  children: WidgetGenerators.getSubsPlayerWidgets(squad.reservePlayers()),
+                  children: WidgetGenerators.getSubsPlayerWidgets(state.squad.reservePlayers()),
                 ),
               )
             )

@@ -1,6 +1,5 @@
 import 'package:fantasy_football/models/player.dart';
-import 'package:fantasy_football/services/api_services.dart';
-import 'package:fantasy_football/services/db_services.dart';
+import 'package:fantasy_football/services/DbServices/players_db_services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PlayersCubit extends Cubit<List<Player>> 
@@ -9,7 +8,7 @@ class PlayersCubit extends Cubit<List<Player>>
 
   Future<List<Player>> loadPlayers() async
   {
-    var players = await DbServices.getPlayers();
+    var players = await PlayersDbServices.getPlayers();
     emit(players);
     return players;
   }

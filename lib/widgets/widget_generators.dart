@@ -12,7 +12,7 @@ class WidgetGenerators
   {
     List<Widget> widgets = [];
 
-    for(var rating in ratings.take(5))
+    for(var rating in ratings.reversed.take(5).toList().reversed)
     {
       widgets.add(RatingContainer(rating, rating.color));
     }

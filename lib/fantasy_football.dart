@@ -1,7 +1,10 @@
 import 'dart:typed_data';
 
 import 'package:fantasy_football/blocs/pageview_cubit.dart';
+import 'package:fantasy_football/blocs/round_cubit.dart';
+import 'package:fantasy_football/blocs/round_timer_cubit.dart';
 import 'package:fantasy_football/blocs/squad_cubit.dart';
+import 'package:fantasy_football/blocs/users_cubit.dart';
 import 'package:fantasy_football/pages/login.dart';
 import 'package:fantasy_football/pages/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -53,6 +56,15 @@ class FantasyFootballState extends State<FantasyFootball> {
         ),
         BlocProvider<PageViewCubit>(
           create: (_) => PageViewCubit(),
+        ),
+        BlocProvider<RoundsCubit>(
+          create: (_) => RoundsCubit(),
+        ),
+        BlocProvider<RoundTimerCubit>(
+          create: (_) => RoundTimerCubit(),
+        ),
+        BlocProvider<UsersCubit>(
+          create: (_) => UsersCubit()..loadUsers(),
         )
       ],
       child: MaterialApp(

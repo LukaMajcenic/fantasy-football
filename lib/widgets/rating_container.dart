@@ -17,7 +17,7 @@ class RatingContainer extends StatelessWidget {
           margin: const EdgeInsets.only(right: 5),
           alignment: Alignment.center,
           child: Text(
-            rating.round,
+            rating.round.shortName,
             style: const TextStyle(fontSize: 12, color: Colors.grey),
           ),
           width: 35,

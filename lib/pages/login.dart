@@ -1,7 +1,4 @@
-import 'dart:ui';
-
 import 'package:fantasy_football/blocs/squad_cubit.dart';
-import 'package:fantasy_football/services/db_services.dart';
 import 'package:fantasy_football/services/login_service.dart';
 import 'package:fantasy_football/svg/login.svg.dart';
 import 'package:flutter/material.dart';
@@ -33,15 +30,19 @@ class _LoginState extends State<Login> {
               children: [
                 ElevatedButton(
                   child: const Text("Login as guest"),
-                  onPressed: () => LoginService.loginAsGuest(context.read<SquadCubit>().state),
+                  onPressed: () => LoginService.loginAsGuest(context.read<SquadCubit>().state.squad),
                 ),
                 ElevatedButton(
                   child: const Text("Login with google"),
-                  onPressed: () => LoginService.signInWithGoogle(context.read<SquadCubit>().state),
+                  onPressed: () => LoginService.signInWithGoogle(context.read<SquadCubit>().state.squad),
                 ),
 /*                 ElevatedButton(
                   child: const Text("Import players"),
                   onPressed: () => DbServices.importPlayers(),
+                ), */
+/*                 ElevatedButton(
+                  child: const Text("Init rounds"),
+                  onPressed: () => DbServices.initRounds(),
                 ), */
               ]
             )
