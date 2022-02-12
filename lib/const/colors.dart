@@ -8,6 +8,7 @@ class C
   static const Color green = Color(0xFFB2FF59);
   static const Color blue = Color(0xFF2962FF);
   static const Color white = Color(0xFFFFFFFF);
+  static const Color silver = Color(0XFFAAAAAA);
 
   static String toHex(Color color)
   {

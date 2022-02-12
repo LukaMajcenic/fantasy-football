@@ -23,7 +23,7 @@ class Squad {
     this.midfielder, 
     this.attacker, 
     this.sub1, 
-    this.sub2, 
+    this.sub2,
     required this.squadSelected});
 
   List<Player?> allPlayers() => [goalkeeper, defender, midfielder, attacker, sub1, sub2];
@@ -48,16 +48,32 @@ class Squad {
     squadSelected: s.squadSelected
   );
 
-  Map<String, Object> toJson()
+  Map<String, Object> toJson([
+    bool addFirstTeamPlayers = true, 
+    bool addReservePlayers = true, 
+    bool addSquadSelected = true])
   {
-    return {
-      "goalkeeperId": goalkeeper?.playerID as Object,
-      "defenderId": defender?.playerID as Object,
-      "midfielderId": midfielder?.playerID as Object,
-      "attackerId": attacker?.playerID as Object,
-      "sub1Id": sub1?.playerID as Object,
-      "sub2Id": sub2?.playerID as Object,
-      "squadSelected": squadSelected
-    };
+    Map<String, Object> json = {};
+
+    if(addFirstTeamPlayers)
+    {
+      json["goalkeeperId"] = goalkeeper?.playerID as Object;
+      json["defenderId"] = defender?.playerID as Object;
+      json["midfielderId"] = midfielder?.playerID as Object;
+      json["attackerId"] = attacker?.playerID as Object;
+    }
+
+    if(addReservePlayers)
+    {
+      json["sub1Id"] = sub1?.playerID as Object;
+      json["sub2Id"] = sub2?.playerID as Object;
+    }
+
+    if(addSquadSelected)
+    {
+      json["squadSelected"] = squadSelected;
+    }
+
+    return json;
   }
 }

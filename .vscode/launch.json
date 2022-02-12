@@ -8,13 +8,7 @@
             "name": "fantasy_football",
             "request": "launch",
             "type": "dart",
-            "program": "lib/fantasy_football.dart"
-        },
-        {
-            "name": "fantasy_football (profile mode)",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "profile"
+            "program": "lib/main.dart"
         }
     ]
 }

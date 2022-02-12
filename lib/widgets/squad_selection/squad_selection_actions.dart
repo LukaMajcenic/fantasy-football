@@ -1,5 +1,5 @@
-import 'package:fantasy_football/blocs/squad_cubit.dart';
-import 'package:fantasy_football/blocs/states/squad_cubit_state.dart';
+import 'package:fantasy_football/blocs/squad/squad_cubit.dart';
+import 'package:fantasy_football/blocs/squad/squad_cubit_state.dart';
 import 'package:fantasy_football/const/colors.dart';
 import 'package:fantasy_football/models/squad.dart';
 import 'package:flutter/material.dart';
@@ -22,13 +22,13 @@ class SquadSelectionActions extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(right: 5),
                 child: ElevatedButton(
-                  onPressed: () => context.read<SquadCubit>().saveSquad(),
+                  onPressed: () => {},
                   child: const Icon(Icons.clear)
                 ),
               ),
               ElevatedButton(
                 onPressed: context.read<SquadCubit>().state.squad.allPlayers().where((p) => p == null).isEmpty 
-                ? () => context.read<SquadCubit>().saveSquad()
+                ? () => {}
                 : null,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,

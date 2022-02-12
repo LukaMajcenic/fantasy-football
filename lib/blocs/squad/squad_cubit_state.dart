@@ -16,3 +16,8 @@ class SquadLoaded extends SquadCubitState
 {
   SquadLoaded({required squad}) : super(squad);
 }
+
+class SquadSavingSwapPlayers extends SquadCubitState
+{
+  SquadSavingSwapPlayers({required squad}) : super(squad);
+}

@@ -9,12 +9,12 @@ class LoginService
     await FirebaseAuth.instance.signOut();
   }
 
-  static Future<void> loginAsGuest(Squad squad) async 
+  static Future<void> loginAsGuest() async 
   {
     await FirebaseAuth.instance.signInAnonymously();
   }
 
-  static Future<void> signInWithGoogle(Squad squad) async {
+  static Future<void> signInWithGoogle() async {
 
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
     final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;

@@ -1,5 +1,5 @@
+import 'package:fantasy_football/helpers/db.dart';
 import 'package:fantasy_football/models/player.dart';
-import 'package:fantasy_football/models/player_image.dart';
 import 'package:fantasy_football/models/rating.dart';
 import 'package:fantasy_football/services/DbServices/rounds_db_services.dart';
 import 'package:fantasy_football/services/DbServices/shared_db_services.dart';
@@ -21,44 +21,39 @@ class PlayersDbServices
   {
     List<Player> players = [];
     List<Future<DatabaseEvent>> playersFutures = [];
-    List<Future<PlayerImage>> imagesFutures = [];
 
     for(var key in await SharedDbServices.getNodeKeys("players"))
     {
       playersFutures.add(FirebaseDatabase.instance.ref("players/$key").once());
-      imagesFutures.add(Player.getUint8List(int.parse(key)));
     }
 
   	var snapshots = (await Future.wait(playersFutures)).map((e) => e.snapshot);
-    var images = await Future.wait(imagesFutures);
 
     for(var snapshot in snapshots)
     {
       players.add(Player.fromJson(
         int.parse(snapshot.key as String), 
         snapshot.value as dynamic,
-        images.firstWhere((image) => image.playerID.toString() == snapshot.key).uint8list
       ));
     }
 
     return players;
   }
 
-  static Future<Player> getPlayer(int playerId, List<PlayerImage> images) async
+  static Future<Player> getPlayer(int playerId) async
   {
     var databaseEvent = await FirebaseDatabase.instance.ref("players/$playerId").once();
     var rounds = await RoundsDbServices.loadRounds();
     var player = Player.fromJson(
       playerId,
-      databaseEvent.snapshot.value, 
-      images.firstWhere((image) => image.playerID == playerId).uint8list
+      databaseEvent.snapshot.value
     );
 
     for(var roundId in await SharedDbServices.getNodeKeys("players/$playerId/ratings"))
     {
       player.ratings.add(Rating(
         round: rounds.firstWhere((r) => r.roundId == roundId),
-        rating: ((await FirebaseDatabase.instance.ref("players/$playerId/ratings/$roundId").once()).snapshot.value as dynamic)["value"]
+        rating: HelperDb.readDouble(((await FirebaseDatabase.instance.ref("players/$playerId/ratings/$roundId").once()).snapshot.value as dynamic)["value"])
       ));
     }
 

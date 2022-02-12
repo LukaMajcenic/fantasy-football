@@ -1,5 +1,5 @@
-import 'package:fantasy_football/blocs/states/users_cubit_states.dart';
-import 'package:fantasy_football/blocs/users_cubit.dart';
+import 'package:fantasy_football/blocs/all_users/all_users_cubit.dart';
+import 'package:fantasy_football/blocs/all_users/all_users_cubit_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,9 +8,9 @@ class StandingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UsersCubit, UsersCubitState>(
+    return BlocBuilder<AllUsersCubit, AllUsersCubitState>(
       builder: (_, state) {
-        if(state.runtimeType == UsersLoading)
+        if(state.runtimeType == AllUsersLoading)
         {
           return Text("Loading...xxx");
         }
