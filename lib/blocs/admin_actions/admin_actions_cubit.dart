@@ -1,5 +1,6 @@
 import 'package:fantasy_football/blocs/admin_actions/admin_actions_cubit_state.dart';
 import 'package:fantasy_football/services/DbServices/rounds_db_services.dart';
+import 'package:fantasy_football/services/api_services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AdminActionsCubit extends Cubit<AdminActionsCubitState>
@@ -14,5 +15,10 @@ class AdminActionsCubit extends Cubit<AdminActionsCubitState>
   Future<void> resetRounds() async
   {
     await RoundsDbServices.initRounds();
+  }
+
+  Future<void> importPlayersFromAPI() async
+  {
+    await ApiServices.getPlayers();
   }
 }
