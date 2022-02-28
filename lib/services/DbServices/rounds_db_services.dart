@@ -1,7 +1,9 @@
+import 'package:fantasy_football/helpers/db.dart';
 import 'package:fantasy_football/helpers/random.dart';
 import 'package:fantasy_football/models/round.dart';
 import 'package:fantasy_football/models/squad.dart';
 import 'package:fantasy_football/services/DbServices/shared_db_services.dart';
+import 'package:fantasy_football/services/DbServices/squad_db_services.dart';
 import 'package:fantasy_football/services/DbServices/users_db_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -34,7 +36,6 @@ class RoundsDbServices
 
   static Future<List<Round>> loadRounds() async
   {
-    print("Rounds started loading");
     List<Round> rounds = [];
 
     for(int i = 1; i <= 38; i++)
@@ -49,12 +50,20 @@ class RoundsDbServices
 
         var value = event.snapshot.value as dynamic;
 
-        rounds.last.score = value["score"];
+        print(i);
+        print(value);
+        //Rounds is played but user hasn't been registered
+        if(value == null)
+        {
+          continue;
+        }
+
+        rounds.last.score = HelperDb.readDouble(value["score"]);
         rounds.last.squadThatRound = {
-          SquadRole.goalkeeper: value["goalkeeperId"],
-          SquadRole.defender: value["defenderId"],
-          SquadRole.midfielder: value["midfielderId"],
-          SquadRole.attacker: value["attackerId"],
+          SquadRole.goalkeeper: value["goalkeeperId"] as int,
+          SquadRole.defender: value["defenderId"] as int,
+          SquadRole.midfielder: value["midfielderId"] as int,
+          SquadRole.attacker: value["attackerId"] as int,
         };
       }
     }
@@ -102,10 +111,10 @@ class RoundsDbServices
         {
           nextRoundId: {
           "score": scorethisRound,
-          "goalkeeperId": user.firstTeamPlayerIds[0],
-          "defenderId": user.firstTeamPlayerIds[1],
-          "midfielderId": user.firstTeamPlayerIds[2],
-          "attackerId": user.firstTeamPlayerIds[3],
+          "goalkeeperId": int.parse(user.firstTeamPlayerIds[0]),
+          "defenderId": int.parse(user.firstTeamPlayerIds[1]),
+          "midfielderId": int.parse(user.firstTeamPlayerIds[2]),
+          "attackerId": int.parse(user.firstTeamPlayerIds[3]),
         }}
       ));
     }

@@ -2,9 +2,12 @@ import 'package:fantasy_football/blocs/rounds/rounds_cubit.dart';
 import 'package:fantasy_football/blocs/rounds/rounds_cubit_state.dart';
 import 'package:fantasy_football/blocs/squad/squad_cubit.dart';
 import 'package:fantasy_football/const/colors.dart';
+import 'package:fantasy_football/dialogs/round_info_dialog/round_info_dialog.dart';
 import 'package:fantasy_football/models/player.dart';
 import 'package:fantasy_football/models/position.dart';
 import 'package:fantasy_football/models/squad.dart';
+import 'package:fantasy_football/widgets/shared/icon_button_v2.dart';
+import 'package:fantasy_football/widgets/shared/loading.dart';
 import 'package:fantasy_football/widgets/shared/player_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,13 +22,18 @@ class RoundsPage extends StatelessWidget {
       {
         if(state.runtimeType == RoundsLoading)
         {
-          return const Text("Rounds loading");
+          return const Loading(text: "Loading rounds");
+        }
+        else if(state.runtimeType == SquadNotSelected)
+        {
+          return const Text("Squad not selected");
         }
 
         return SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: DataTable(
-            columnSpacing: 30,
+            showCheckboxColumn: false,
+            columnSpacing: 10,
             columns: const [
               DataColumn(
                 label: Text("Round")
@@ -41,47 +49,49 @@ class RoundsPage extends StatelessWidget {
             rows: [
               for(var round in state.rounds)
                 DataRow(
+                  onSelectChanged: round.squadThatRound != null ? (_) {
+                    showDialog(
+                      context: context, 
+                      builder: (_) => RoundInfoDialog(round: round)
+                    );
+                  } : null,
                   cells: [
                     DataCell(
                       Text(round.shortName)
                     ),
                     DataCell(
                       Text(
-                        round.played ? round.score.toString() : "TBD",
+                        round.squadThatRound != null ? round.score?.toStringAsFixed(2) as String : "TBD",
                         style: TextStyle(
-                          color: round.played ? Colors.red : C.dark_3
+                          color: round.getColor()
                         ),
                       )
                     ),
                     DataCell(
-                      round.played ? Container(
-                        alignment: Alignment.centerRight,
-                        padding: const EdgeInsets.symmetric(vertical: 2),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            PlayerImageWidget(
-                              playerId: round.squadThatRound?[SquadRole.goalkeeper],
-                              position: Position.goalkeeper(),
-                              margin: const [0, 2],
-                            ),
-                            PlayerImageWidget(
-                              playerId: round.squadThatRound?[SquadRole.defender],
-                              position: Position.defender(),
-                              margin: const [0, 2],
-                            ),
-                            PlayerImageWidget(
-                              playerId: round.squadThatRound?[SquadRole.midfielder],
-                              position: Position.midfielder(),
-                              margin: const [0, 2],
-                            ),
-                            PlayerImageWidget(
-                              playerId: round.squadThatRound?[SquadRole.attacker],
-                              position: Position.attacker(),
-                              margin: const [0, 2],
-                            )
-                          ],
-                        ),
+                      round.squadThatRound != null ? Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          PlayerImageWidget(
+                            playerId: round.squadThatRound?[SquadRole.goalkeeper].toString(),
+                            position: Position.goalkeeper(),
+                            margin: const [0, 2],
+                          ),
+                          PlayerImageWidget(
+                            playerId: round.squadThatRound?[SquadRole.defender].toString(),
+                            position: Position.defender(),
+                            margin: const [0, 2],
+                          ),
+                          PlayerImageWidget(
+                            playerId: round.squadThatRound?[SquadRole.midfielder].toString(),
+                            position: Position.midfielder(),
+                            margin: const [0, 2],
+                          ),
+                          PlayerImageWidget(
+                            playerId: round.squadThatRound?[SquadRole.attacker].toString(),
+                            position: Position.attacker(),
+                            margin: const [0, 2],
+                          )
+                        ],
                       )
                       : Container()
                     )

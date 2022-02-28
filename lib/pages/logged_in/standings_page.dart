@@ -1,5 +1,7 @@
 import 'package:fantasy_football/blocs/all_users/all_users_cubit.dart';
 import 'package:fantasy_football/blocs/all_users/all_users_cubit_state.dart';
+import 'package:fantasy_football/models/user.dart';
+import 'package:fantasy_football/widgets/shared/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,7 +14,7 @@ class StandingsPage extends StatelessWidget {
       builder: (_, state) {
         if(state.runtimeType == AllUsersLoading)
         {
-          return Text("Loading...xxx");
+          return const Loading(text: "Loading standings");
         }
        
         return DataTable(
@@ -25,7 +27,7 @@ class StandingsPage extends StatelessWidget {
             )
           ], 
           rows: [
-            for(var user in state.users)
+            for(var user in User.sortUsers(state.users))
               DataRow(
                 cells: [
                   DataCell(Text(user.userId)),

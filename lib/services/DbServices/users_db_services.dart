@@ -24,6 +24,7 @@ class UserDbServices
       if((snapshot.value as dynamic)["squadSelected"])
       {
         users.add(User.fromJson(snapshot.key as String, snapshot.value));
+        users.last.firebaseUser = users.last.userId == SharedDbServices.getUserId();
       }
     }
 

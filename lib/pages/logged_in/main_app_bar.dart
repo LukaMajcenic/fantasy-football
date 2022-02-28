@@ -25,6 +25,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         IconButtonV2(
           onPressed: () async {
+            context.read<PageCubit>().changeIndexBottomNavigation(0);
             await LoginService.logout();
           }, 
           icon: Icons.logout

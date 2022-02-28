@@ -1,8 +1,12 @@
+import 'package:fantasy_football/blocs/rounds/rounds_cubit.dart';
 import 'package:fantasy_football/blocs/squad/squad_cubit.dart';
 import 'package:fantasy_football/blocs/squad/squad_cubit_state.dart';
 import 'package:fantasy_football/const/colors.dart';
 import 'package:fantasy_football/models/player.dart';
+import 'package:fantasy_football/models/squad.dart';
+import 'package:fantasy_football/pages/logged_in/squad_selection_page.dart';
 import 'package:fantasy_football/widgets/shared/icon_button_v2.dart';
+import 'package:fantasy_football/widgets/shared/loading.dart';
 import 'package:fantasy_football/widgets/shared/player_general_info_widget.dart';
 import 'package:fantasy_football/widgets/squad_page/squad_text_container.dart';
 import 'package:flutter/material.dart';
@@ -17,11 +21,35 @@ class SquadPage extends StatelessWidget {
       builder: (_, state) {
         if(state.runtimeType == SquadLoading)
         {
-          return const Text("squad loading");
+          return const Loading(text: "Loading squad");
         }
         else if(!state.squad.squadSelected)
         {
-          return const Text("squad selection button");
+          return Center(
+            child: ElevatedButton(
+              child: const Text("Pick squad"),
+              onPressed: () async {
+                await Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) {
+
+                      return MultiBlocProvider(
+                        providers: [
+                          BlocProvider.value(
+                            value: context.read<SquadCubit>()
+                          ),
+                          BlocProvider.value(
+                            value: context.read<RoundsCubit>()
+                          )
+                        ],
+                        child: const SquadSelectionPage(),
+                      );
+                    },
+                  ),
+                );
+              },
+            ),
+          );
         }
         else if(state.runtimeType == SquadSavingSwapPlayers)
         {

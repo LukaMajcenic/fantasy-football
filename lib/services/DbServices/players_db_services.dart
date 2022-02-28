@@ -43,7 +43,6 @@ class PlayersDbServices
   static Future<Player> getPlayer(int playerId) async
   {
     var databaseEvent = await FirebaseDatabase.instance.ref("players/$playerId").once();
-    var rounds = await RoundsDbServices.loadRounds();
     var player = Player.fromJson(
       playerId,
       databaseEvent.snapshot.value
@@ -52,7 +51,7 @@ class PlayersDbServices
     for(var roundId in await SharedDbServices.getNodeKeys("players/$playerId/ratings"))
     {
       player.ratings.add(Rating(
-        round: rounds.firstWhere((r) => r.roundId == roundId),
+        roundId: roundId,
         rating: HelperDb.readDouble(((await FirebaseDatabase.instance.ref("players/$playerId/ratings/$roundId").once()).snapshot.value as dynamic)["value"])
       ));
     }

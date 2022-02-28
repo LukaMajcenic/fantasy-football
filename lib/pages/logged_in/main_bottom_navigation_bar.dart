@@ -16,7 +16,7 @@ class MainBottomNavigationBar extends StatelessWidget {
             await context.read<PageCubit>().changeIndexBottomNavigation(newIndex);
           },
           currentIndex: state.index,
-          unselectedItemColor:  Colors.blueAccent[100],
+          unselectedItemColor:  C.white.withOpacity(0.4),
           selectedItemColor: C.green,
           backgroundColor: C.blue,
           items: const [

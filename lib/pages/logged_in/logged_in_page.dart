@@ -5,7 +5,7 @@ import 'package:fantasy_football/blocs/rounds/rounds_cubit.dart';
 import 'package:fantasy_football/blocs/squad/squad_cubit.dart';
 import 'package:fantasy_football/blocs/squad/squad_cubit_state.dart';
 import 'package:fantasy_football/models/squad.dart';
-import 'package:fantasy_football/pages/logged_in/home_page_test.dart';
+import 'package:fantasy_football/pages/logged_in/home_page.dart';
 import 'package:fantasy_football/pages/logged_in/main_app_bar.dart';
 import 'package:fantasy_football/pages/logged_in/main_bottom_navigation_bar.dart';
 import 'package:fantasy_football/pages/logged_in/main_drawer.dart';
@@ -30,9 +30,6 @@ class LoggedInPage extends StatelessWidget {
         ),
         BlocProvider<RoundsCubit>(
           create: (_) => RoundsCubit()..loadRounds()
-        ),
-        BlocProvider<AdminActionsCubit>(
-          create: (_) => AdminActionsCubit(),
         )
       ],
       child: Scaffold(
@@ -41,11 +38,11 @@ class LoggedInPage extends StatelessWidget {
         body: PageView(
           controller: context.read<PageCubit>().controller,
           onPageChanged: (newIndex) => context.read<PageCubit>().changeIndexPageView(newIndex),
-          children: [
-            const HomePageTest(),
-            const SquadPage(),
-            const RoundsPage(),
-            const StandingsPage(),
+          children: const [
+            HomePage(),
+            SquadPage(),
+            RoundsPage(),
+            StandingsPage(),
           ]
         ),
         bottomNavigationBar: const MainBottomNavigationBar(),

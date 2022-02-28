@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class SharedDbServices
@@ -12,5 +13,10 @@ class SharedDbServices
   {
     DatabaseEvent event = await FirebaseDatabase.instance.ref(node).once();
     return event.snapshot.exists;
+  }
+
+  static String? getUserId()
+  {
+    return FirebaseAuth.instance.currentUser?.uid;
   }
 }

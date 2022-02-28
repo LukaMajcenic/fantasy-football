@@ -6,12 +6,14 @@ class IconButtonV2 extends StatelessWidget {
     required this.onPressed, 
     required this.icon,
     this.colors,
+    this.size,
     Key? key 
   }) : super(key: key);
 
   final VoidCallback onPressed;
   final IconData icon;
   final List<Color>? colors;
+  final double? size;
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +27,13 @@ class IconButtonV2 extends StatelessWidget {
        shaderCallback: (bounds) => RadialGradient(
         center: Alignment.bottomRight,
         radius: 0.6,
-        colors: colors ?? [C.green, C.silver],
+        colors: colors ?? [C.white, C.silver],
         tileMode: TileMode.mirror
       ).createShader(bounds),
       child: IconButton(
         onPressed: onPressed, 
-        icon: Icon(icon)
+        icon: Icon(icon),
+        iconSize: size ?? 24,
       ),
     );
   }

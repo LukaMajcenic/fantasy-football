@@ -14,7 +14,7 @@ class AdminButton extends StatelessWidget {
       padding: const EdgeInsets.only(left: 10, right: 10, bottom: 6),
       child: ElevatedButton(
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: icon == null ? [
             Text(text.toUpperCase()),
           ] : [
@@ -31,9 +31,13 @@ class AdminButton extends StatelessWidget {
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           primary: C.dark_2,
-          onPrimary: C.white,
+          onPrimary: C.green,
           textStyle: const TextStyle(
             fontWeight: FontWeight.w900,
+          ),
+          side: BorderSide(
+            color: C.blue,
+            width: 2
           )
         ),
       ),

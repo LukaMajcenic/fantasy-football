@@ -1,3 +1,5 @@
+import 'package:fantasy_football/dialogs/player_info_dialog/222.dart';
+import 'package:fantasy_football/dialogs/player_info_dialog/player_info_dialog.dart';
 import 'package:fantasy_football/models/player.dart';
 import 'package:fantasy_football/widgets/shared/player_image.dart';
 import 'package:fantasy_football/widgets/shared/player_ratings_widget.dart';
@@ -22,7 +24,21 @@ class PlayerGeneralInfoWidget extends StatelessWidget {
             borderRadius: BorderRadius.zero,
           ),
         ),
-        onPressed: () {},
+        onPressed: () {
+          showModalBottomSheet(
+            isScrollControlled: true,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10)
+            ),
+            context: context, 
+            builder: (_) => PlayerInfoDialogV2(player: player)
+          );
+
+/*           showDialog(
+            context: context, 
+            builder: (_) => PlayerInfoDialog(player: player)
+          ); */
+        },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [

@@ -1,4 +1,5 @@
 import 'package:fantasy_football/models/player.dart';
+import 'package:fantasy_football/models/position.dart';
 
 enum SquadRole { 
   goalkeeper, 
@@ -29,6 +30,7 @@ class Squad {
   List<Player?> allPlayers() => [goalkeeper, defender, midfielder, attacker, sub1, sub2];
   List<Player?> firstTeamPlayers() => [goalkeeper, defender, midfielder, attacker];
   List<Player?> reservePlayers() => [sub1, sub2];
+  List<String> firstTeamPlayersIds() => allPlayers().where((p) => p != null).map((p) => (p as Player).playerID.toString()).toList();
 
   static List<SquadRole> firstTeamRoles() => [
     SquadRole.goalkeeper, 
@@ -55,6 +57,8 @@ class Squad {
   {
     Map<String, Object> json = {};
 
+    print(goalkeeper);
+
     if(addFirstTeamPlayers)
     {
       json["goalkeeperId"] = goalkeeper?.playerID as Object;
@@ -75,5 +79,22 @@ class Squad {
     }
 
     return json;
+  }
+
+  static SquadRole getSquadRole(Position position)
+  {
+    switch(position.positionId)
+    {
+      case 1:
+        return SquadRole.goalkeeper;
+      case 2:
+        return SquadRole.defender;
+      case 3:
+        return SquadRole.midfielder;
+      case 4:
+        return SquadRole.attacker;
+      default:
+        return SquadRole.goalkeeper;
+    }
   }
 }

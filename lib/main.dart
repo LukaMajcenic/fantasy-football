@@ -1,3 +1,4 @@
+import 'package:fantasy_football/blocs/admin_actions/admin_actions_cubit.dart';
 import 'package:fantasy_football/blocs/current_user/firebase_user.dart';
 import 'package:fantasy_football/blocs/current_user/firebase_user_state.dart';
 import 'package:fantasy_football/blocs/page/page_cubit.dart';
@@ -28,6 +29,9 @@ class Main extends StatelessWidget {
         ),
         BlocProvider<PageCubit>(
           create: (_) => PageCubit()
+        ),
+        BlocProvider<AdminActionsCubit>(
+          create: (_) => AdminActionsCubit(),
         )
       ],
       child: MaterialApp(

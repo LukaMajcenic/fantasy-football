@@ -43,8 +43,7 @@ class MainDrawer extends StatelessWidget {
                 onPressed: () async {
                   await context.read<AdminActionsCubit>().simulateNextRound();
                 },
-                text: "Simulate next round",
-                icon: Icons.next_plan_outlined,
+                text: "Simulate next round"
               ),
             ],
           )

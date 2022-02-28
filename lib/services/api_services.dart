@@ -61,4 +61,28 @@ class ApiServices
 
     return players;
   }
+
+  static Future<Player> getPlayer() async
+  {
+    Response response = await http.get(
+      Uri.parse("https://v3.football.api-sports.io/players?league=39&season=2021"),
+      headers: {
+        'x-rapidapi-key': 'b5cc1f9b7a050c8ac85c2830cfd47baa',
+      }
+    );
+    dynamic responseJson = jsonDecode(response.body);
+
+    var data = responseJson['response'][0];
+    var player = data['player'];
+    var statistics = data['statistics'][0];
+
+  /*   print() */
+
+    return Player(
+      playerID: player['id'] as int,
+      firstName: player['firstname'] as String,
+      lastName: player['lastname'] as String,
+      position: Position.generatePostition(statistics['games']['position'] as String)
+    );
+  }
 }

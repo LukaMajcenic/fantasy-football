@@ -9,15 +9,15 @@ class PlayerRatingsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Wrap(
       children: [
         for(var rating in ratings)
         Padding(
-          padding: const EdgeInsets.only(right: 6),
+          padding: const EdgeInsets.only(right: 6, top: 2),
           child: Column(
             children: [
               Text(
-                rating.round.shortName,
+                "R" + rating.roundId,
                 style: TextStyle(
                   color: Colors.white.withOpacity(0.2),
                   fontSize: 13

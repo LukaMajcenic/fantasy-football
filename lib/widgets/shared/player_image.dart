@@ -1,10 +1,12 @@
 import 'dart:typed_data';
 
+import 'package:fantasy_football/const/colors.dart';
 import 'package:fantasy_football/models/player.dart';
 import 'package:fantasy_football/models/position.dart';
 import 'package:fantasy_football/models/squad.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class PlayerImageWidget extends StatelessWidget {
   const PlayerImageWidget({
@@ -43,7 +45,7 @@ class PlayerImageWidget extends StatelessWidget {
     }
     else if(margin != null)
     {
-      throw ("Margins size can only be 1, 2 or 4");
+      throw ("Margins array size can only be 1, 2 or 4");
     }
 
     return EdgeInsets.zero;
@@ -82,10 +84,11 @@ class PlayerImageWidget extends StatelessWidget {
                   return Image.memory(snapshot.data as Uint8List);
                 }
 
-                return Container(
-                  height: 70,
-                  width: 70,
-                  child: Icon(Icons.access_alarm),
+                return AspectRatio(
+                    aspectRatio: 1/1,
+                    child: SpinKitRipple(
+                      color: C.white.withOpacity(0.4)
+                    ),
                 );
               },
             )

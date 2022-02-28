@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 class Rating
 {
   double rating;
-  Round round;
+  String roundId;
   late Color color;
 
-  Rating({required this.rating, required this.round})
+  Rating({required this.rating, required this.roundId})
   {
     if(rating <= 4) {color = const Color(0xffff0000);}
     else if(rating <= 8) {color = const Color(0xffffff00);}
@@ -18,7 +18,7 @@ class Rating
   {
     return {
       "value": rating,
-      "roundId": round.roundId
+      "roundId": roundId
     };
   }
 }

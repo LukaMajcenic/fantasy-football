@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class C
 {
+  static const Color transparent = Colors.transparent;
   static const Color dark_1 = Color(0xFF191919);
   static const Color dark_2 = Color(0XFF212121);
   static const Color dark_3 = Color(0XFF2E2E2E);

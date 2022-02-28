@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:fantasy_football/models/position.dart';
 import 'package:fantasy_football/models/rating.dart';
+import 'package:fantasy_football/models/round.dart';
 import 'package:fantasy_football/models/squad.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -19,14 +20,7 @@ class Player {
   Player({required this.playerID, 
   required this.firstName, 
   required this.lastName,
-  required this.position})
-  {
-/*     var rng = Random();
-    for(int i = 0; i < 12; i++)
-    {
-      ratings.add(Rating(rng.nextDouble() * (10 - 1) + 1, "R" + (i+1).toString()));
-    } */
-  }
+  required this.position});
 
   String fullname() => firstName + " " + lastName;
 
@@ -47,6 +41,7 @@ class Player {
       }
     }
 
+    await Future.delayed(Duration(seconds: 6));
     return Img.encodePng(image) as Uint8List;
   }
 
@@ -67,5 +62,10 @@ class Player {
       lastName: player['lastName'],
       position: Position.generatePostition(player['position'])
     );
+  }
+
+  Rating getRoundRating(Round round)
+  {
+    return ratings.firstWhere((r) => r.roundId == round.roundId);
   }
 }

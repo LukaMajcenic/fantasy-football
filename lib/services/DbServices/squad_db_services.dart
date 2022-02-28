@@ -27,38 +27,13 @@ class SquadDbServices
 
   static Future saveSquad(Squad squad) async
   {
-    print(squad.goalkeeper);
-    //print(squad.toJson());
     await FirebaseDatabase.instance.ref("users/${FirebaseAuth.instance.currentUser?.uid}").update(squad.toJson());
     print("Squad updated");
   }
 
-  static Future<List<String>> loadSquadPlayerIds() async
+  static Future<Squad> loadSquad() async
   {
     DatabaseEvent event = await FirebaseDatabase.instance.ref("users/${FirebaseAuth.instance.currentUser?.uid}").once();
-    dynamic values = event.snapshot.value as dynamic;
-
-    if(values["squadSelected"])
-    {
-      return <String>[
-        values['goalkeeperId'].toString(),
-        /* values['defenderId'].toString(), */
-        values['midfielderId'].toString(),
-        values['attackerId'].toString(),
-        values['sub1Id'].toString(),
-        values['sub2Id'].toString()
-      ];
-    }
-
-      return <String>[];
-  }
-
-  static Future<Squad> loadSquad({String? roundId}) async
-  {
-    print("Squad started loading");
-    DatabaseEvent event = roundId == null 
-      ? await FirebaseDatabase.instance.ref("users/${FirebaseAuth.instance.currentUser?.uid}").once()
-      : await FirebaseDatabase.instance.ref("users/${FirebaseAuth.instance.currentUser?.uid}/$roundId").once();
     dynamic values = event.snapshot.value as dynamic;
 
     if(await SquadDbServices.squadSelected())
@@ -67,7 +42,7 @@ class SquadDbServices
         SquadRole.goalkeeper: values['goalkeeperId'],
         SquadRole.defender: values['defenderId'],
         SquadRole.midfielder: values['midfielderId'],
-        SquadRole.attacker: values['attackerId'],
+        SquadRole.attacker: values['attackerId'],        
         SquadRole.sub1: values['sub1Id'],
         SquadRole.sub2: values['sub2Id']
       };
@@ -88,5 +63,38 @@ class SquadDbServices
     }
     
     return Squad(squadSelected: false);
+  }
+
+  static Future<Squad> loadSquadByRound(String roundId) async
+  {
+    print("Squad started loading");
+    print(roundId);
+    DatabaseEvent event = await FirebaseDatabase.instance.ref("users/${FirebaseAuth.instance.currentUser?.uid}/rounds/$roundId").once();
+    dynamic values = event.snapshot.value as dynamic;
+
+    print(values);
+
+    Map<SquadRole, int> playerIds = {
+      SquadRole.goalkeeper: values['goalkeeperId'],
+      SquadRole.defender: values['defenderId'],
+      SquadRole.midfielder: values['midfielderId'],
+      SquadRole.attacker: values['attackerId']
+    };
+
+    print(playerIds);
+
+    var players = await Future.wait(
+      playerIds.values.map((playerId) => PlayersDbServices.getPlayer(playerId))
+    );
+
+    print("ssdsdsd");
+
+    return Squad(
+      goalkeeper: players.firstWhere((p) => p.playerID == playerIds[SquadRole.goalkeeper]),
+      defender: players.firstWhere((p) => p.playerID == playerIds[SquadRole.defender]),
+      midfielder: players.firstWhere((p) => p.playerID == playerIds[SquadRole.midfielder]),
+      attacker: players.firstWhere((p) => p.playerID == playerIds[SquadRole.attacker]),
+      squadSelected: true
+    );
   }
 }
