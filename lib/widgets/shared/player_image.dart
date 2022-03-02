@@ -3,9 +3,7 @@ import 'dart:typed_data';
 import 'package:fantasy_football/const/colors.dart';
 import 'package:fantasy_football/models/player.dart';
 import 'package:fantasy_football/models/position.dart';
-import 'package:fantasy_football/models/squad.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class PlayerImageWidget extends StatelessWidget {
@@ -86,8 +84,15 @@ class PlayerImageWidget extends StatelessWidget {
 
                 return AspectRatio(
                     aspectRatio: 1/1,
-                    child: SpinKitRipple(
-                      color: C.white.withOpacity(0.4)
+                    child: Stack(
+                      children: [
+                        Image.asset(
+                          "assets/player_default.png",
+                        ),
+                        SpinKitRipple(
+                          color: C.white.withOpacity(0.4)
+                        ),
+                      ],
                     ),
                 );
               },

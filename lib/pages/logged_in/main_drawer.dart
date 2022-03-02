@@ -1,13 +1,17 @@
 import 'package:fantasy_football/blocs/admin_actions/admin_actions_cubit.dart';
-import 'package:fantasy_football/blocs/rounds/rounds_cubit.dart';
+import 'package:fantasy_football/blocs/page/page_cubit.dart';
 import 'package:fantasy_football/const/colors.dart';
+import 'package:fantasy_football/services/login_service.dart';
 import 'package:fantasy_football/widgets/shared/admin_button.dart';
+import 'package:fantasy_football/widgets/shared/drawer_button.dart';
 import 'package:fantasy_football/widgets/shared/icon_button_v2.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/src/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MainDrawer extends StatelessWidget {
-  const MainDrawer({ Key? key }) : super(key: key);
+  MainDrawer({ Key? key }) : super(key: key);
+
+  final usernameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +32,14 @@ class MainDrawer extends StatelessWidget {
                     icon: Icons.menu_open_sharp
                   )
                 ],
+              ),
+              DrawerButton(
+                text: "Odjava",
+                icon: Icons.logout, 
+                onPressed: () async {
+                  await context.read<PageCubit>().changeIndexBottomNavigation(0);
+                  await LoginService.logout();
+                }
               ),
             ],
           ),

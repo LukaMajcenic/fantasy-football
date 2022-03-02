@@ -57,8 +57,6 @@ class Squad {
   {
     Map<String, Object> json = {};
 
-    print(goalkeeper);
-
     if(addFirstTeamPlayers)
     {
       json["goalkeeperId"] = goalkeeper?.playerID as Object;

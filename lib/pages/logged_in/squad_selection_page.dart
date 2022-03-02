@@ -6,8 +6,8 @@ import 'package:fantasy_football/const/colors.dart';
 import 'package:fantasy_football/models/player.dart';
 import 'package:fantasy_football/models/position.dart';
 import 'package:fantasy_football/models/squad.dart';
-import 'package:fantasy_football/pages/logged_in/players_page.dart';
 import 'package:fantasy_football/widgets/shared/icon_button_v2.dart';
+import 'package:fantasy_football/widgets/shared/loading.dart';
 import 'package:fantasy_football/widgets/shared/player_general_info_widget.dart';
 import 'package:fantasy_football/widgets/squad_page/squad_text_container.dart';
 import 'package:fantasy_football/widgets/squad_selection/empty_player_button.dart';
@@ -30,7 +30,7 @@ class SquadSelectionPage extends StatelessWidget {
 
             if(state.runtimeType == SquadSaving)
             {
-              return Text("wot");
+              return const Loading(text: "Saving squad");
             }
 
             return Column(

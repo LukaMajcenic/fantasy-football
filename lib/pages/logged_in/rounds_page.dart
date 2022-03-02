@@ -1,12 +1,8 @@
 import 'package:fantasy_football/blocs/rounds/rounds_cubit.dart';
 import 'package:fantasy_football/blocs/rounds/rounds_cubit_state.dart';
-import 'package:fantasy_football/blocs/squad/squad_cubit.dart';
-import 'package:fantasy_football/const/colors.dart';
-import 'package:fantasy_football/dialogs/round_info_dialog/round_info_dialog.dart';
-import 'package:fantasy_football/models/player.dart';
 import 'package:fantasy_football/models/position.dart';
 import 'package:fantasy_football/models/squad.dart';
-import 'package:fantasy_football/widgets/shared/icon_button_v2.dart';
+import 'package:fantasy_football/pages/logged_in/round_details_page.dart';
 import 'package:fantasy_football/widgets/shared/loading.dart';
 import 'package:fantasy_football/widgets/shared/player_image.dart';
 import 'package:flutter/material.dart';
@@ -23,10 +19,6 @@ class RoundsPage extends StatelessWidget {
         if(state.runtimeType == RoundsLoading)
         {
           return const Loading(text: "Loading rounds");
-        }
-        else if(state.runtimeType == SquadNotSelected)
-        {
-          return const Text("Squad not selected");
         }
 
         return SingleChildScrollView(
@@ -49,10 +41,16 @@ class RoundsPage extends StatelessWidget {
             rows: [
               for(var round in state.rounds)
                 DataRow(
-                  onSelectChanged: round.squadThatRound != null ? (_) {
-                    showDialog(
-                      context: context, 
-                      builder: (_) => RoundInfoDialog(round: round)
+                  onSelectChanged: round.squadThatRound != null ? (_) async {
+                    await Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) {
+                          return BlocProvider.value(
+                            value: context.read<RoundsCubit>()..loadRoundSquad(round),
+                            child: RoundDetailsPage(round: round,),
+                          );
+                        },
+                      ),
                     );
                   } : null,
                   cells: [

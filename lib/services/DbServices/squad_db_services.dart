@@ -1,9 +1,5 @@
-import 'package:fantasy_football/models/player.dart';
-import 'package:fantasy_football/models/position.dart';
 import 'package:fantasy_football/models/squad.dart';
 import 'package:fantasy_football/services/DbServices/players_db_services.dart';
-import 'package:fantasy_football/services/DbServices/shared_db_services.dart';
-import 'package:fantasy_football/services/DbServices/users_db_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -28,7 +24,6 @@ class SquadDbServices
   static Future saveSquad(Squad squad) async
   {
     await FirebaseDatabase.instance.ref("users/${FirebaseAuth.instance.currentUser?.uid}").update(squad.toJson());
-    print("Squad updated");
   }
 
   static Future<Squad> loadSquad() async
@@ -67,12 +62,8 @@ class SquadDbServices
 
   static Future<Squad> loadSquadByRound(String roundId) async
   {
-    print("Squad started loading");
-    print(roundId);
     DatabaseEvent event = await FirebaseDatabase.instance.ref("users/${FirebaseAuth.instance.currentUser?.uid}/rounds/$roundId").once();
     dynamic values = event.snapshot.value as dynamic;
-
-    print(values);
 
     Map<SquadRole, int> playerIds = {
       SquadRole.goalkeeper: values['goalkeeperId'],
@@ -81,13 +72,9 @@ class SquadDbServices
       SquadRole.attacker: values['attackerId']
     };
 
-    print(playerIds);
-
     var players = await Future.wait(
       playerIds.values.map((playerId) => PlayersDbServices.getPlayer(playerId))
     );
-
-    print("ssdsdsd");
 
     return Squad(
       goalkeeper: players.firstWhere((p) => p.playerID == playerIds[SquadRole.goalkeeper]),

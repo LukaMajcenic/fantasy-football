@@ -1,4 +1,3 @@
-import 'package:fantasy_football/models/round.dart';
 import 'package:flutter/material.dart';
 
 class Rating

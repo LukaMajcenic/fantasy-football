@@ -1,6 +1,5 @@
 import 'package:fantasy_football/blocs/squad/squad_cubit_state.dart';
 import 'package:fantasy_football/models/player.dart';
-import 'package:fantasy_football/models/position.dart';
 import 'package:fantasy_football/models/squad.dart';
 import 'package:fantasy_football/services/DbServices/shared_db_services.dart';
 import 'package:fantasy_football/services/DbServices/squad_db_services.dart';
@@ -22,7 +21,6 @@ class SquadCubit extends Cubit<SquadCubitState>
 
   Future<void> loadSquad() async
   {
-    print("called");
     if(!await SharedDbServices.nodeExists("users/${FirebaseAuth.instance.currentUser?.uid}"))
     {
       await SquadDbServices.initSquad();

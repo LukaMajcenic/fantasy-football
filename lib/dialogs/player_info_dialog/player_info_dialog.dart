@@ -1,9 +1,7 @@
-import 'dart:typed_data';
-
 import 'package:fantasy_football/const/colors.dart';
 import 'package:fantasy_football/dialogs/player_info_dialog/player_info_dialog_table_cell.dart';
 import 'package:fantasy_football/models/player.dart';
-import 'package:fantasy_football/widgets/shared/icon_button_v2.dart';
+import 'package:fantasy_football/widgets/shared/image_future_builder.dart';
 import 'package:fantasy_football/widgets/shared/player_ratings_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -30,79 +28,105 @@ class PlayerInfoDialog extends StatelessWidget {
           ]
         )
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Stack(
+        alignment: Alignment.topRight,
         children: [
-          Container(
-            
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                FutureBuilder<Uint8List>(
-                  future: Player.getUint8List(player.playerID.toString()),
-                  builder: (_, snapshot) {
-
-                    if(snapshot.hasData)
-                    {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5),
-                        child: Image.memory(snapshot.data as Uint8List, ),
-                      );
-                    }
-
-                    return Container(
-                      height: 70,
-                      width: 70,
-                      child: Icon(Icons.access_alarm),
-                    );
-                  },
-                ),
-                Text(
-                  player.position.fullName.toUpperCase(),
-                  style: TextStyle(
-                    fontSize: 30,
-                    color: player.position.color.withOpacity(0.2),
-                    fontWeight: FontWeight.bold
-                  )
-                ),
-              ],
-            ),
+          RotatedBox(
+            quarterTurns: 1,
+            child: Text(
+              player.position.fullName.toUpperCase(),
+              style: TextStyle(
+                fontSize: 60,
+                fontWeight: FontWeight.bold,
+                foreground: Paint()
+                  ..style = PaintingStyle.stroke
+                  ..strokeWidth = 1.5
+                  ..color = player.position.color.withOpacity(0.3)
+              ),
+            )
           ),
-          Table(
-            defaultColumnWidth: const IntrinsicColumnWidth(),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TableRow(
-                children: [
-                  const PlayerInfoDialogTableCell(text: "FIRST NAME:"),
-                  PlayerInfoDialogTableCell(text: player.firstName)
-                ]
+              SizedBox(
+                height: 150,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    ImageFutureBuilder(
+                      future: Player.getUint8List(player.playerID.toString()),
+                      width: 150,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Image.network(player.countryFlag, width: 30,),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Image.network(player.clubLogo, width: 30,),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
-              TableRow(
+              Table(
+                defaultColumnWidth: const IntrinsicColumnWidth(),
                 children: [
-                  const PlayerInfoDialogTableCell(text: "LAST NAME:"),
-                  PlayerInfoDialogTableCell(text: player.lastName)
-                ]
+                  TableRow(
+                    children: [
+                      const PlayerInfoDialogTableCell(text: "FIRST NAME:"),
+                      PlayerInfoDialogTableCell(text: player.firstName)
+                    ]
+                  ),
+                  TableRow(
+                    children: [
+                      const PlayerInfoDialogTableCell(text: "LAST NAME:"),
+                      PlayerInfoDialogTableCell(text: player.lastName)
+                    ]
+                  ),
+                  TableRow(
+                    children: [
+                      const PlayerInfoDialogTableCell(text: "AGE:"),
+                      PlayerInfoDialogTableCell(text: player.age)
+                    ]
+                  ),
+                  TableRow(
+                    children: [
+                      const PlayerInfoDialogTableCell(text: "DATE OF BIRTH:"),
+                      PlayerInfoDialogTableCell(text: player.dateOfBirthText)
+                    ]
+                  ),
+                  TableRow(
+                    children: [
+                      const PlayerInfoDialogTableCell(text: "NATIONAILTY:"),
+                      PlayerInfoDialogTableCell(text: player.nationality)
+                    ]
+                  ),
+                  TableRow(
+                    children: [
+                      const PlayerInfoDialogTableCell(text: "HEIGHT:"),
+                      PlayerInfoDialogTableCell(text: player.heightText)
+                    ]
+                  ),
+                  TableRow(
+                    children: [
+                      const PlayerInfoDialogTableCell(text: "WEIGHT:"),
+                      PlayerInfoDialogTableCell(text: player.weightText)
+                    ]
+                  )
+                ],
               ),
-              const TableRow(
-                children: [
-                  PlayerInfoDialogTableCell(text: "CLUB:"),
-                  PlayerInfoDialogTableCell(text: "Club name")
-                ]
+              Expanded(
+                child: PlayerRatingsWidget(player.ratings)
               )
             ],
           ),
-          Expanded(
-            child: PlayerRatingsWidget(player.ratings)
-          ),
-          Container(
-            alignment: Alignment.centerRight,
-            child: ElevatedButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text("Zatvori"),
-            )
-          )
         ],
       ),
     );

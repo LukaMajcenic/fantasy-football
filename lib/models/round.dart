@@ -1,5 +1,4 @@
 import 'package:fantasy_football/const/colors.dart';
-import 'package:fantasy_football/models/player.dart';
 import 'package:fantasy_football/models/squad.dart';
 import 'package:flutter/material.dart';
 

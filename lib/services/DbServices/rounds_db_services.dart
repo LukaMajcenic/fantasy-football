@@ -2,8 +2,8 @@ import 'package:fantasy_football/helpers/db.dart';
 import 'package:fantasy_football/helpers/random.dart';
 import 'package:fantasy_football/models/round.dart';
 import 'package:fantasy_football/models/squad.dart';
+import 'package:fantasy_football/services/DbServices/players_db_services.dart';
 import 'package:fantasy_football/services/DbServices/shared_db_services.dart';
-import 'package:fantasy_football/services/DbServices/squad_db_services.dart';
 import 'package:fantasy_football/services/DbServices/users_db_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -50,8 +50,6 @@ class RoundsDbServices
 
         var value = event.snapshot.value as dynamic;
 
-        print(i);
-        print(value);
         //Rounds is played but user hasn't been registered
         if(value == null)
         {
@@ -103,8 +101,7 @@ class RoundsDbServices
       }
 
       futures.add(FirebaseDatabase.instance.ref("users/${user.userId}").update(
-        {"points": user.points + scorethisRound,
-        "pointsPrevRound": user.points}
+        {"points": user.points + scorethisRound}
       ));
 
       futures.add(FirebaseDatabase.instance.ref("users/${user.userId}/rounds").update(
@@ -122,5 +119,22 @@ class RoundsDbServices
     Future.wait(futures);
     await FirebaseDatabase.instance.ref("rounds/$nextRoundId")
       .update({"played": true});
+  }
+
+  static Future<Round> loadRoundSquad(Round round) async
+  {
+    var players = await Future.wait(
+      (round.squadThatRound as Map<SquadRole, int>).values.map((id) => PlayersDbServices.getPlayer(id))
+    );
+
+    round.squadThatRoundDetails = Squad(
+      goalkeeper: players.firstWhere((p) => p.playerID == round.squadThatRound?[SquadRole.goalkeeper]),
+      defender: players.firstWhere((p) => p.playerID == round.squadThatRound?[SquadRole.defender]),
+      midfielder: players.firstWhere((p) => p.playerID == round.squadThatRound?[SquadRole.midfielder]),
+      attacker: players.firstWhere((p) => p.playerID == round.squadThatRound?[SquadRole.attacker]),
+      squadSelected: true
+    );
+
+    return round;
   }
 }

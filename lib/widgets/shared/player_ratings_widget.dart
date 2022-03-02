@@ -1,4 +1,3 @@
-import 'package:fantasy_football/const/colors.dart';
 import 'package:fantasy_football/models/rating.dart';
 import 'package:flutter/material.dart';
 

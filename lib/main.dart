@@ -4,7 +4,7 @@ import 'package:fantasy_football/blocs/current_user/firebase_user_state.dart';
 import 'package:fantasy_football/blocs/page/page_cubit.dart';
 import 'package:fantasy_football/const/colors.dart';
 import 'package:fantasy_football/pages/logged_in/logged_in_page.dart';
-import 'package:fantasy_football/pages/logged_out/LoggedOutPage.dart';
+import 'package:fantasy_football/pages/logged_out/logged_out_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +46,7 @@ class Main extends StatelessWidget {
           textTheme: Theme.of(context).textTheme.apply(
             displayColor: Colors.white,
             bodyColor: Colors.grey[50]
-          )
+          ),
         ),
         home: BlocBuilder<CurrentUserCubit, CurrentUserState>(
           builder: (_, state) {

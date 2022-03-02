@@ -18,9 +18,11 @@ class StandingsPage extends StatelessWidget {
         }
        
         return DataTable(
+          columnSpacing: 0,
           columns: const [
+            DataColumn(label: Text("")),
             DataColumn(
-              label: Text("Username")
+              label: Text("User")
             ),
             DataColumn(
               label: Text("Points")
@@ -30,6 +32,12 @@ class StandingsPage extends StatelessWidget {
             for(var user in User.sortUsers(state.users))
               DataRow(
                 cells: [
+                  DataCell(
+                    Image.network(
+                      "https://avatars.dicebear.com/api/identicon/${user.userId}.png",
+                      height: 30,
+                    )
+                  ),
                   DataCell(Text(user.userId)),
                   DataCell(Text(user.points.toStringAsFixed(2)))
                 ]

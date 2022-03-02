@@ -1,7 +1,6 @@
 import 'package:fantasy_football/blocs/page/page_cubit.dart';
 import 'package:fantasy_football/blocs/page/page_cubit_state.dart';
 import 'package:fantasy_football/const/colors.dart';
-import 'package:fantasy_football/services/login_service.dart';
 import 'package:fantasy_football/widgets/shared/icon_button_v2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,15 +21,6 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
           return Text(state.appBarText);
         }
       ),
-      actions: [
-        IconButtonV2(
-          onPressed: () async {
-            context.read<PageCubit>().changeIndexBottomNavigation(0);
-            await LoginService.logout();
-          }, 
-          icon: Icons.logout
-        )
-      ],
     );
   }
 

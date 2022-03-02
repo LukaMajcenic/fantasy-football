@@ -3,7 +3,6 @@ import 'package:fantasy_football/blocs/squad/squad_cubit.dart';
 import 'package:fantasy_football/blocs/squad/squad_cubit_state.dart';
 import 'package:fantasy_football/const/colors.dart';
 import 'package:fantasy_football/models/player.dart';
-import 'package:fantasy_football/models/squad.dart';
 import 'package:fantasy_football/pages/logged_in/squad_selection_page.dart';
 import 'package:fantasy_football/widgets/shared/icon_button_v2.dart';
 import 'package:fantasy_football/widgets/shared/loading.dart';

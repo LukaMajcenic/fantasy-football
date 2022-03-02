@@ -1,6 +1,7 @@
 import 'package:fantasy_football/blocs/admin_actions/admin_actions_cubit.dart';
 import 'package:fantasy_football/widgets/shared/admin_button.dart';
 import 'package:flutter/material.dart';
+// ignore: implementation_imports
 import 'package:provider/src/provider.dart';
 
 class AdminActionsDialog extends StatelessWidget {
@@ -13,6 +14,10 @@ class AdminActionsDialog extends StatelessWidget {
         AdminButton(
           text: "Import players from api", 
           onPressed: () async => await context.read<AdminActionsCubit>().importPlayersFromAPI()
+        ),
+        AdminButton(
+          text: "Get player from api", 
+          onPressed: () async => await context.read<AdminActionsCubit>().getPlayerFromAPI()
         ),
       ],
     );

@@ -1,4 +1,3 @@
-import 'package:fantasy_football/const/colors.dart';
 import 'package:fantasy_football/models/round.dart';
 
 abstract class RoundsCubitState
@@ -18,7 +17,7 @@ class RoundsLoaded extends RoundsCubitState
   RoundsLoaded({required rounds}) : super(rounds);
 }
 
-class SquadNotSelected extends RoundsCubitState
+class LoadingRoundInfo extends RoundsCubitState
 {
-  
+  LoadingRoundInfo({required rounds}) : super(rounds);
 }

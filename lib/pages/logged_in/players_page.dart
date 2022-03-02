@@ -1,12 +1,10 @@
 import 'package:fantasy_football/blocs/players/players_cubit.dart';
 import 'package:fantasy_football/blocs/players/players_cubit_state.dart';
 import 'package:fantasy_football/blocs/squad/squad_cubit.dart';
-import 'package:fantasy_football/blocs/squad/squad_cubit_state.dart';
 import 'package:fantasy_football/const/colors.dart';
 import 'package:fantasy_football/models/position.dart';
 import 'package:fantasy_football/models/squad.dart';
-import 'package:fantasy_football/widgets/shared/icon_button_v2.dart';
-import 'package:fantasy_football/widgets/shared/player_general_info_widget.dart';
+import 'package:fantasy_football/widgets/shared/loading.dart';
 import 'package:fantasy_football/widgets/shared/player_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,7 +21,7 @@ class PlayersPage extends StatelessWidget {
       builder: (_, state) {
         if(state.runtimeType == PlayersLoading)
         {
-          return Text("sss");
+          return const Loading(text: "Loading players");
         }
 
         var availablePlayers = state.players.where((p) => !context.read<SquadCubit>().state.squad.firstTeamPlayersIds().contains(p.playerID.toString())).toList();
@@ -40,7 +38,7 @@ class PlayersPage extends StatelessWidget {
                 child: Row(
                   children: [
                     PlayerImageWidget(player: player,),
-                    Text(player.fullname()),
+                    Text(player.fullname),
                     Expanded(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,

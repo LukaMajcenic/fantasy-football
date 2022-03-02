@@ -1,17 +1,16 @@
 import 'package:fantasy_football/helpers/db.dart';
 import 'package:fantasy_football/models/player.dart';
 import 'package:fantasy_football/models/rating.dart';
-import 'package:fantasy_football/services/DbServices/rounds_db_services.dart';
 import 'package:fantasy_football/services/DbServices/shared_db_services.dart';
 import 'package:fantasy_football/services/api_services.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class PlayersDbServices
 {
-  static Future importPlayers() async
+  static Future importPlayersFromAPI() async
   {
     await FirebaseDatabase.instance.ref("players").remove();
-    for(var player in await ApiServices.getPlayers())
+    for(var player in await ApiServices.getPlayersFromAPI())
     {
       await FirebaseDatabase.instance.ref("players/${player.playerID}").set(player.toJson());
     }

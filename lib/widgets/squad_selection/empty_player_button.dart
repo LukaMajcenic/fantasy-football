@@ -1,10 +1,7 @@
 import 'package:fantasy_football/blocs/players/players_cubit.dart';
 import 'package:fantasy_football/blocs/squad/squad_cubit.dart';
 import 'package:fantasy_football/const/colors.dart';
-import 'package:fantasy_football/models/player.dart';
 import 'package:fantasy_football/models/position.dart';
-import 'package:fantasy_football/models/squad.dart';
-import 'package:fantasy_football/models/squad.dart';
 import 'package:fantasy_football/models/squad.dart';
 import 'package:fantasy_football/pages/logged_in/players_page.dart';
 import 'package:flutter/material.dart';

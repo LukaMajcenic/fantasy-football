@@ -1,4 +1,3 @@
-import 'package:fantasy_football/dialogs/player_info_dialog/222.dart';
 import 'package:fantasy_football/dialogs/player_info_dialog/player_info_dialog.dart';
 import 'package:fantasy_football/models/player.dart';
 import 'package:fantasy_football/widgets/shared/player_image.dart';
@@ -31,13 +30,8 @@ class PlayerGeneralInfoWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(10)
             ),
             context: context, 
-            builder: (_) => PlayerInfoDialogV2(player: player)
-          );
-
-/*           showDialog(
-            context: context, 
             builder: (_) => PlayerInfoDialog(player: player)
-          ); */
+          );
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -50,7 +44,13 @@ class PlayerGeneralInfoWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(player.fullname()),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Image.network(player.countryFlag,  height: 10,),
+                    Text(player.fullname),
+                  ],
+                ),
                 PlayerRatingsWidget(
                   player.ratings.reversed.take(5).toList().reversed
                 )
