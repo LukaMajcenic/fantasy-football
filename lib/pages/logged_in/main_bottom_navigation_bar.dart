@@ -21,11 +21,6 @@ class MainBottomNavigationBar extends StatelessWidget {
           backgroundColor: C.blue,
           items: const [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: "",
-              backgroundColor: C.blue,
-            ),
-            BottomNavigationBarItem(
               icon: Icon(Icons.people), 
               label: "",
               backgroundColor: C.blue,

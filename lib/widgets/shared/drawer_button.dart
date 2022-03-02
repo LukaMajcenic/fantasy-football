@@ -5,17 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-class AdminButton extends StatelessWidget {
-  const AdminButton({required this.text, required this.onPressed, this.icon, Key? key }) : super(key: key);
+class DrawerButton extends StatelessWidget {
+  const DrawerButton({required this.text, required this.onPressed, required this.icon, Key? key }) : super(key: key);
 
   final String text;
   final VoidCallback onPressed;
-  final IconData? icon;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 6),
+      padding: const EdgeInsets.all(8),
       child: ElevatedButton(
         child: BlocBuilder<AdminActionsCubit, AdminActionsCubitState>(
           builder: (_, state) {
@@ -38,16 +38,11 @@ class AdminButton extends StatelessWidget {
             }
 
             return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: icon == null ? [
-                Text(text.toUpperCase()),
-              ] : [
-                Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Icon(
-                    icon, 
-                    color: C.blue
-                  ),
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Icon(
+                  icon, 
+                  color: C.blue
                 ),
                 Text(text.toUpperCase()),
               ],
@@ -57,14 +52,10 @@ class AdminButton extends StatelessWidget {
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           primary: C.dark_2,
-          onPrimary: C.green,
+          onPrimary: C.white,
           textStyle: const TextStyle(
             fontWeight: FontWeight.w900,
           ),
-          side: const BorderSide(
-            color: C.blue,
-            width: 2
-          )
         ),
       ),
     );

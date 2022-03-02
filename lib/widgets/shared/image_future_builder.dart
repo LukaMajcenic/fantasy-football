@@ -22,11 +22,20 @@ class ImageFutureBuilder extends StatelessWidget {
           return Image.memory(
             snapshot.data as Uint8List,
             height: height,
+            width: width,
           );
         }
 
-        return SpinKitRipple(
-          color: C.white.withOpacity(0.4)
+        return Stack(
+          children: [
+            Image.asset(
+              "assets/player_default.png",
+            ),
+            SpinKitRipple(
+              color: C.white.withOpacity(0.4),
+              size: width ?? 50,
+            ),
+          ],
         );
       },
     );

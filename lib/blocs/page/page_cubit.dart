@@ -22,12 +22,10 @@ class PageCubit extends Cubit<PageCubitState>
     switch(index)
     {
       case 0:
-        return "Home";
-      case 1:
         return "Squad";
-      case 2:
+      case 1:
         return "Rounds";
-      case 3:
+      case 2:
         return "Standings";
       default:
         return "";

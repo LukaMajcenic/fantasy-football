@@ -10,7 +10,13 @@ class User
   Squad? squad;
   List<String> firstTeamPlayerIds;
 
-  User({required this.userId, required this.points, required this.firebaseUser, required this.firstTeamPlayerIds, this.squad});
+  User({
+    required this.userId, 
+    required this.points, 
+    required this.firebaseUser, 
+    required this.firstTeamPlayerIds, 
+    this.squad
+  });
 
   static User fromJson(String userId, dynamic json)
   {
@@ -31,7 +37,7 @@ class User
   {
     users.sort((a, b) => a.points.compareTo(b.points));
 
-    return users;
+    return users.reversed.toList();
   }
 
   static int getPosition(List<User> users)

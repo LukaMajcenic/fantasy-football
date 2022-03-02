@@ -1,14 +1,11 @@
-import 'package:fantasy_football/blocs/rounds/rounds_cubit.dart';
-import 'package:fantasy_football/blocs/rounds/rounds_cubit_state.dart';
-import 'package:fantasy_football/const/colors.dart';
 import 'package:fantasy_football/dialogs/dialog_base.dart';
 import 'package:fantasy_football/models/player.dart';
 import 'package:fantasy_football/models/round.dart';
 import 'package:fantasy_football/models/squad.dart';
 import 'package:fantasy_football/services/DbServices/squad_db_services.dart';
 import 'package:fantasy_football/widgets/shared/image_future_builder.dart';
+import 'package:fantasy_football/widgets/shared/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RoundInfoDialog extends StatelessWidget {
   const RoundInfoDialog({required this.round, Key? key }) : super(key: key);
@@ -23,7 +20,7 @@ class RoundInfoDialog extends StatelessWidget {
         builder: (_, snapshot) {
           if(!snapshot.hasData)
           {
-            return Text("loading..");
+            return const Loading(text: "Loading round info");
           }
 
           return Column(
@@ -53,7 +50,7 @@ class RoundInfoDialog extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(top: 10),
                               child: Text(
-                                player.fullname(),
+                                player.fullname,
                                 style: const TextStyle(
                                   fontSize: 15,
                                 ),

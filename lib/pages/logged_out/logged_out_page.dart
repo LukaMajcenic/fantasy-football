@@ -7,7 +7,6 @@ import 'package:fantasy_football/widgets/shared/icon_button_v2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/src/provider.dart';
 
 class LoggedOutPage extends StatelessWidget {
   const LoggedOutPage({ Key? key }) : super(key: key);
@@ -40,21 +39,40 @@ class LoggedOutPage extends StatelessWidget {
         children: [
           SizedBox(
             height: 600,
-            child: SvgPicture.string(LoginSvg.rawSvg, fit: BoxFit.fitHeight)
+            child: SvgPicture.string(LoginSvg.raw, fit: BoxFit.fitHeight)
           ),
           Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  child: const Text("Login as guest"),
-                  onPressed: () => LoginService.loginAsGuest(),
-                ),
-                ElevatedButton(
-                  child: const Text("Login with google"),
-                  onPressed: () => LoginService.signInWithGoogle(),
-                ),
-              ]
+            child: SizedBox(
+              width: 200,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ElevatedButton(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: const [
+                        Text("Login as guest"),
+                        Icon(Icons.person_off_outlined)
+                      ],
+                    ),
+                    onPressed: () => LoginService.loginAsGuest(),
+                  ),
+                  ElevatedButton(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        const Text("Login with google"),
+                        Image.network(
+                          "https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-webinar-optimizing-for-success-google-business-webinar-13.png",
+                          height: 30,
+                        )
+                      ],
+                    ),
+                    onPressed: () => LoginService.signInWithGoogle(),
+                  ),
+                ]
+              ),
             )
           ),
         ]
